@@ -1,0 +1,60 @@
+<!doctype html>
+	<head>
+		<style>
+			body {
+			    font-family: arial;
+			}
+			button {
+			    padding:10px;
+			    background-color:#6a67ce;
+			    color: #FFFFFF;
+			    border: 0px;
+			    cursor:pointer;
+			    border-radius: 5px;
+			}
+			#output {
+			    background-color:#F9F9F9;
+			    padding:10px;
+			    width: 100%;
+			    margin-top:20px;
+			    line-height:30px;
+			}
+			.hide {
+			    display:none;
+			}
+			.show {
+			    display:block;
+			}
+		</style>
+		<title> Speech to Text</title>
+	</head>
+	<body>
+        <center><p><button type="button" onclick="runSpeechRecognition()">Start</button> &nbsp; <span id="action"></span></p></center>
+        <div id="output" class="hide"></div>
+		<script>
+			/* JS comes here */
+		    function runSpeechRecognition() {
+		        var output = document.getElementById("output");
+		        var action = document.getElementById("action");
+                var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+                var recognition = new SpeechRecognition();
+                recognition.onstart = function() {
+                    action.innerHTML = "<h5>please speak...</h5>";
+                };
+                
+                recognition.onspeechend = function() {
+                    action.innerHTML = "<h5>stopped listening..</h5>";
+                    recognition.stop();
+                }             
+                recognition.onresult = function(event) {
+                    var transcript = event.results[0][0].transcript;
+                    output.innerHTML = "<b> " + transcript + " </b> " ;
+                    output.classList.remove("hide");
+                };
+              
+                 // start recognition
+                 recognition.start();
+	        }
+		</script>
+	</body>
+</html>
